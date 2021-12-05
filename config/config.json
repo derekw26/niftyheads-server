@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "postgres",
+    "username": "weizard",
     "password": null,
     "database": "niftyheads_db",
     "host": "127.0.0.1",
