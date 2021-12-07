@@ -1,129 +1,35 @@
 const express = require('express');
-
+const bodyParser = require('body-parser');
+const cors = require('cors');
 const { sequelize, User, Avatar } = require('./models');
 
+const avatarRoutes = require('./routes/avatarRoutes');
+const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
+
+
+
 const app = express();
-app.use(express.json());
 
-// USER CRUD
-// NEW USER
-app.post('/users', async(req, res) => {
-  const { name, email } = req.body
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
-  try {
-    const user = await User.create({ name, email })
-    return res.json(user)
-  } catch(err) {
-    console.log(err)
-    return res.status(500).json(err)
-  }
+avatarRoutes(app);
+userRoutes(app);
+authRoutes(app);
+
+app.get('/', (req, res) => {
+  res.json({
+    message: 'This message is from the server'
+  })
 })
 
-// INDEX USERS
-app.get('/users', async(req, res) => {
-  try {
-    const users = await User.findAll()
+// SERVER START
+const PORT = process.env.PORT || 5000;
 
-    return res.json(users)
-  } catch(err) {
-    console.log(err)
-    return res.status(500).json({ err: 'Something went wrong!' })
-  }
-})
-
-// FIND USER
-app.get('/users/:uuid', async(req, res) => {
-  const uuid = req.params.uuid
-  try {
-    const user = await User.findOne({
-      where : { uuid },
-      include: 'avatars'
-    })
-
-    return res.json(user)
-
-  } catch(err) {
-    console.log(err)
-    return res.status(500).json({ err: 'Something went wrong!' })
-  }
-})
-
-// UPDATE USER
-app.put('/users/:uuid', async(req, res) => {
-  const uuid = req.params.uuid
-  const { name, email } = req.body
-
-  try {
-    const user = await User.findOne({
-      where : { uuid }
-    })
-
-    user.name = name
-    user.email = email
-
-    await user.save()
-
-    return res.json(user)
-
-  } catch(err) {
-    console.log(err)
-    return res.status(500).json({ err: 'Something went wrong!' })
-  }
-})
-
-// DELETE USER
-app.delete('/users/:uuid', async(req, res) => {
-  const uuid = req.params.uuid
-  try {
-    const user = await User.findOne({
-      where : { uuid }
-    })
-
-    await user.destroy()
-
-    return res.json({ message: 'User deleted!'})
-
-  } catch(err) {
-    console.log(err)
-    return res.status(500).json({ err: 'Something went wrong!' })
-  }
-})
-
-
-// AVATARS
-app.post('/avatars', async(req, res) => {
-  const { userUuid, url } = req.body
-
-  try {
-    const user = await User.findOne({ where: { uuid: userUuid }})
-
-    const avatar = await Avatar.create({ url, userId: user.id })
-
-    return res.json(avatar)
-
-  } catch(err) {
-    console.log(err)
-    return res.status(500).json(err)
-  }
-})
-
-app.get('/avatars', async(req, res) => {
-  const { userUuid, url } = req.body
-
-  try {
-    const avatars = await Avatar.findAll({ include: ['user'] })
-
-    return res.json(avatars)
-
-  } catch(err) {
-    console.log(err)
-    return res.status(500).json(err)
-  }
-})
-
-
-app.listen({ port: 5000 }, async() => {
-    console.log('Server up on http://localhost:5000')
+app.listen(PORT, async() => {
+    console.log(`Server up on port ${ PORT }`)
     await sequelize.authenticate()
     console.log('Database connected!')
 })

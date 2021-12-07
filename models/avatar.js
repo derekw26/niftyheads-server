@@ -4,7 +4,7 @@ const {
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Avatar extends Model {
-  
+
     static associate({ User }) {
 
       this.belongsTo(User, { foreignKey: 'userId', as: 'user' })

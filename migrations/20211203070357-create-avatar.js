@@ -27,7 +27,7 @@ module.exports = {
         allowNull: false
       },
       createdBy: {
-        type: DataTypes.UUID,
+        type: DataTypes.UUID
       },
       price: {
         type: DataTypes.NUMERIC
