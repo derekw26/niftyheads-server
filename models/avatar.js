@@ -30,7 +30,6 @@ module.exports = (sequelize, DataTypes) => {
     listed: DataTypes.BOOLEAN
   }, {
     sequelize,
-    // tableName: 'avatars',
     modelName: 'Avatar',
   });
   return Avatar;

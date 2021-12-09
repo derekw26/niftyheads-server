@@ -47,7 +47,6 @@ module.exports = (sequelize, DataTypes) => {
     isAdmin: DataTypes.BOOLEAN
   }, {
     sequelize,
-    // tableName: 'users',
     modelName: 'User',
   });
   return User;

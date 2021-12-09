@@ -10,7 +10,7 @@ exports.createUser = async(req, res) => {
 
   } catch(err) {
     console.log(err)
-    return res.status(500).json({ err: 'Something went wrong!' })
+    return res.status(500).json(err)
   }
 }
 
@@ -22,7 +22,7 @@ exports.showUsers = async(req, res) => {
 
   } catch(err) {
     console.log(err)
-    return res.status(500).json({ err: 'Something went wrong!' })
+    return res.status(500).json(err)
   }
 }
 
@@ -39,21 +39,21 @@ exports.readUser = async(req, res) => {
 
   } catch(err) {
     console.log(err)
-    return res.status(500).json({ err: 'Something went wrong!' })
+    return res.status(500).json(err)
   }
 }
 
 // UPDATE USER
 exports.updateUser = async(req, res) => {
   const uuid = req.params.uuid
-  const { name, email } = req.body
+  const { username, email, password } = req.body
 
   try {
     const user = await User.findOne({
       where : { uuid }
     })
 
-    user.name = name
+    user.username = username
     user.email = email
 
     await user.save()
@@ -61,7 +61,7 @@ exports.updateUser = async(req, res) => {
 
   } catch(err) {
     console.log(err)
-    return res.status(500).json({ err: 'Something went wrong!' })
+    return res.status(500).json(err)
   }
 }
 
@@ -78,7 +78,7 @@ exports.deleteUser = async(req, res) => {
 
   } catch(err) {
     console.log(err)
-    return res.status(500).json({ err: 'Something went wrong!' })
+    return res.status(500).json(err)
   }
 }
 
@@ -87,9 +87,9 @@ exports.allAccess = (req, res) => {
 };
 
 exports.userBoard = (req, res) => {
-  res.status(200).send("User Content.");
+  res.status(200).send("User content coming soon.");
 };
 
 exports.adminBoard = (req, res) => {
-  res.status(200).send("Admin Content.");
+  res.status(200).send("Admin content coming soon.");
 };

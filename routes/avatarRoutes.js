@@ -1,4 +1,5 @@
 const avatarController = require('../controllers/avatarController');
+const { authJwt } = require("../middleware");
 
 module.exports = (app) => {
   app
@@ -6,9 +7,9 @@ module.exports = (app) => {
     .get(avatarController.showAvatars)
     .post(avatarController.createAvatar)
 
-  // app
-  //   .route('/avatars/:uuid')
-  //   .get(avatarController.readAvatar)
-  //   .put(avatarController.updateAvatar)
-  //   .delete(avatarController.deleteAvatar)
+  app
+    .route('/avatars/:uuid')
+    .get(avatarController.readAvatar)
+    .put(avatarController.updateAvatar)
+    // .delete(avatarController.deleteAvatar)
 };
